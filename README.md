@@ -240,7 +240,6 @@ The Random Forest model identified the most influential factors contributing to 
 
 # 📁 Repository Structure
 
-```
 Supply-Chain-Analytics/
 
 │── main.ipynb
@@ -254,4 +253,3 @@ Supply-Chain-Analytics/
 - XGBoost and LightGBM model comparison
 - Interactive Power BI dashboard
 - Real-time prediction pipeline using Streamlit or Flask
----
