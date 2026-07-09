@@ -246,20 +246,6 @@ Supply-Chain-Analytics/
 │── main.ipynb
 │── README.md
 
-
-
----
-
-
-Example:
-
-- KPI Dashboard
-- Delay Distribution
-- Profit Analysis
-- Feature Importance
-- ROC Curve
-- Confusion Matrix
-
 ---
 
 # 🎯 Future Improvements
