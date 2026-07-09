@@ -1,4 +1,4 @@
-# 🚚 Supply Chain Management Analytics | End-to-End Data Analytics Project
+# Supply Chain Management Analytics | End-to-End Data Analytics Project
 
 ## 📌 Project Overview
 
@@ -34,7 +34,7 @@ The objective is to answer key business questions such as:
 
 ## 📂 Dataset
 
-**Source:** DataCo Global Supply Chain Dataset
+**Source:** [DataCo Global Supply Chain Dataset](https://www.kaggle.com/datasets/shashwatwork/dataco-smart-supply-chain-for-big-data-analysis)
 
 ### Dataset Summary
 
@@ -243,18 +243,13 @@ The Random Forest model identified the most influential factors contributing to 
 ```
 Supply-Chain-Analytics/
 
-│── DataCoSupplyChainDataset.csv
-│── DescriptionDataCoSupplyChain.csv
-│── Supply_Chain_Analytics.ipynb
+│── main.ipynb
 │── README.md
-│── requirements.txt
-```
+
+
 
 ---
 
-# 📷 Project Screenshots
-
-> Add screenshots here after uploading them.
 
 Example:
 
@@ -267,22 +262,6 @@ Example:
 
 ---
 
-# 📚 Skills Demonstrated
-
-- Data Cleaning
-- Data Wrangling
-- Feature Engineering
-- Exploratory Data Analysis
-- Statistical Analysis
-- Data Visualization
-- Business KPI Development
-- Supply Chain Analytics
-- Predictive Analytics
-- Machine Learning
-- Business Storytelling
-
----
-
 # 🎯 Future Improvements
 
 - Hyperparameter tuning using GridSearchCV / RandomizedSearchCV
@@ -290,18 +269,3 @@ Example:
 - Interactive Power BI dashboard
 - Real-time prediction pipeline using Streamlit or Flask
 
----
-
-# 👨‍💻 Author
-
-**Akshad Gajapure**
-
-Chemical Engineering Undergraduate | NIT Raipur
-
-Aspiring Data Analyst | Python | SQL | Power BI | Machine Learning
-
-LinkedIn: *(Add your LinkedIn URL)*
-
-GitHub: *(Add your GitHub URL)*
-
----
