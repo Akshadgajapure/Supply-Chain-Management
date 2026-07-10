@@ -1,34 +1,35 @@
-# Supply Chain Management Analytics | End-to-End Data Analytics Project
+# Supply Chain Delivery Analytics | End-to-End Data Analytics Project
 
 ## 📌 Project Overview
 
-This project presents an end-to-end Supply Chain Analytics solution built using **Python** to analyze a real-world global supply chain dataset containing **180,000+ orders**.
+This project presents an end-to-end supply chain analytics solution built in **Python**, analyzing a real-world global e-commerce supply chain dataset of **180,000+ raw orders (172,765 after cleaning)**.
 
-The objective is to uncover operational inefficiencies, identify factors responsible for delivery delays, analyze profitability across different business dimensions, and develop a predictive model to identify orders at risk of late delivery.
+The objective is to uncover operational inefficiencies, quantify the financial impact of delivery delays, identify root causes across regions and shipping modes, and build a validated predictive model to flag at-risk shipments before dispatch.
 
-The project follows a complete analytics workflow including:
+The project follows a complete analytics workflow:
 
 - Business Understanding
 - Data Cleaning & Preprocessing
 - Feature Engineering
 - Exploratory Data Analysis (EDA)
 - KPI Development
-- Business Insights & Recommendations
-- Machine Learning Modeling
+- Root Cause & Bottleneck Analysis
+- Time-Based Delay Analysis
+- Machine Learning Modeling (Multi-Model Comparison with Cross-Validation)
+- Business Recommendations
 
 ---
 
 ## 🎯 Business Problem
 
-The company operates a global e-commerce supply chain where delayed deliveries negatively impact customer satisfaction, operational efficiency, and profitability.
+A global e-commerce company managing end-to-end order fulfillment faces inconsistent delivery performance — actual shipping time frequently deviates from scheduled timelines, driving late deliveries and unpredictable order profitability.
 
-The objective is to answer key business questions such as:
+Key business questions addressed:
 
-- Which regions experience the highest delivery delays?
-- Which shipping modes perform poorly?
-- Which customer segments contribute the highest revenue?
-- How do delivery delays affect profitability?
-- Can we predict late deliveries before shipment?
+- Which regions, shipping modes, and customer segments experience the highest delivery delays?
+- How much profit is actually being lost to late deliveries?
+- What time-based patterns (month, day, hour) predict higher delay risk?
+- Can we reliably predict which orders are at risk of late delivery *before* they ship?
 
 ---
 
@@ -38,38 +39,24 @@ The objective is to answer key business questions such as:
 
 ### Dataset Summary
 
-- **180,519 Orders**
-- **50+ Features**
-- Global Supply Chain Operations
-- Customer Information
-- Product Information
-- Shipping Details
-- Revenue & Profit Metrics
-- Delivery Status
+- 180,519 raw orders → **172,765 orders after cleaning** (cancelled shipments removed)
+- 50+ original features
+- Global supply chain operations across multiple regions
+- Customer, product, shipping, and financial fields
 
 ---
 
 ## 🛠️ Tech Stack
 
-### Programming
+**Language:** Python
 
-- Python
+**Libraries:** Pandas, NumPy, Matplotlib, Seaborn, Scikit-learn, XGBoost, LightGBM, Imbalanced-learn (SMOTE)
 
-### Libraries
-
-- Pandas
-- NumPy
-- Matplotlib
-- Scikit-learn
-- Imbalanced-learn (SMOTE)
-
-### Development Environment
-
-- Jupyter Notebook
+**Environment:** Jupyter Notebook
 
 ---
 
-# 🔄 Project Workflow
+## 🔄 Project Workflow
 
 ```
 Business Understanding
@@ -87,10 +74,10 @@ Exploratory Data Analysis
 Business KPI Development
         │
         ▼
-Business Insights
+Root Cause & Time-Based Analysis
         │
         ▼
-Machine Learning Modeling
+Multi-Model ML Comparison (5-Fold CV)
         │
         ▼
 Business Recommendations
@@ -98,158 +85,144 @@ Business Recommendations
 
 ---
 
-# 🧹 Data Cleaning
+## 🧹 Data Cleaning
 
-Performed multiple preprocessing steps including:
-
-- Removed duplicate records
-- Handled missing values
-- Removed irrelevant columns
-- Removed high-cardinality identifier columns
-- Converted date columns to datetime format
-- Removed cancelled orders
-- Standardized column formats
+- Removed cancelled orders (`Delivery Status == 'Shipping canceled'`)
+- Dropped 15+ irrelevant / high-cardinality / PII columns (customer email, password, name, zip code, coordinates, etc.)
+- Converted order and shipping date columns to proper datetime format
+- Verified no missing values or duplicate rows remained after cleaning
 
 ---
 
-# ⚙️ Feature Engineering
+## ⚙️ Feature Engineering
 
-Created new business-driven analytical features:
-
-- Delay (Actual - Scheduled Delivery)
-- Order Processing Time
-- Late Delivery Flag
-- Month
-- Day
-- Hour
-- Delivery Performance Indicators
-- Frequency Encoding for categorical variables
+- **Order Processing Time** — actual days between order and shipment
+- **Delay** — actual processing time minus scheduled shipment days
+- **Is_Delayed** — binary flag derived from `Delay`
+- **Profitability Flag** — Profit / Loss / Break-even, derived from order-level profit
+- **order_month, order_day, order_hour** — extracted for time-based trend analysis
+- **Frequency Encoding** — applied to categorical fields (Type, Category, Segment, Department, Region, Shipping Mode) for modeling
 
 ---
 
-# 📊 Exploratory Data Analysis
+## 📊 Exploratory Data Analysis
 
-Performed detailed analysis on:
-
-- Delivery Delay Distribution
-- Revenue Trends
-- Profitability Analysis
-- Shipping Mode Performance
-- Customer Segment Analysis
-- Department-wise Performance
-- Regional Performance
-- Monthly Delay Trends
-- Root Cause Analysis
-- Operational Bottlenecks
+- Delivery delay distribution and profitability split (Profit / Loss / Break-even)
+- Bottleneck detection: delay % by Region, Customer Segment, Shipping Mode, Order Status, Type, and Department
+- Root cause analysis: top delay drivers *within* each region
+- Time-based analysis: delay % trends by month, day of week, and hour of day
 
 ---
 
-# 📈 Key Performance Indicators (KPIs)
+## 📈 Key Performance Indicators (KPIs)
 
-## Delivery Metrics
+| KPI | Value |
+|---|---|
+| Total Orders | 172,765 |
+| Late Deliveries | 94,523 |
+| On-Time Delivery Rate | 45.29% |
+| Late Delivery Rate | 54.71% |
+| 90th Percentile Delay | 3.0 days |
+| Total Profit | $7.5M |
+| **Total Profit Lost to Delays** | **$2.1M** |
 
-- Total Orders
-- Late Deliveries
-- On-Time Delivery Rate
-- Late Delivery Rate
-- Average Delay
-- 90th Percentile Delay
-- SLA Compliance
-
-## Financial Metrics
-
-- Total Revenue
-- Total Profit
-- Profit Margin
-- Average Order Value
-- Profit Loss due to Delays
-
-## Operational Metrics
-
-- Shipping Mode Performance
-- Department Efficiency
-- Customer Segment Performance
-- Regional Delivery Performance
+The **$2.1M in profit lost to delayed orders** is the single most important business figure in this analysis — it reframes delivery delay from an operational annoyance into a quantified, board-level financial problem.
 
 ---
 
-# 🤖 Machine Learning
+## 🤖 Machine Learning
 
 ### Objective
-
-Predict whether an order is likely to experience a late delivery before shipment.
-
-### Target Variable
-
-- **Late_delivery_risk**
-
-### Model Used
-
-- Random Forest Classifier
+Predict whether an order is at risk of late delivery (`Late_delivery_risk`) using information known at order time — not derived from the actual (future) shipping date, avoiding target leakage.
 
 ### Data Preparation
+- Frequency encoding for categorical features
+- Train-test split (80:20)
+- **SMOTE** applied to the training set to correct class imbalance
 
-- Frequency Encoding
-- Train-Test Split (80:20)
-- SMOTE for class balancing
+### Models Compared
+Rather than relying on a single model, four classifiers were benchmarked head-to-head using **5-fold stratified cross-validation** on the balanced training set, then validated on a held-out test set:
 
----
-
-# 📊 Model Performance
-
-| Metric | Score |
-|---------|------:|
-| Accuracy | **74%** |
-| Precision | **85%** |
-| Recall | **65%** |
-| F1 Score | **74%** |
-| ROC-AUC | **0.82** |
-
-The model demonstrates strong discriminative ability to distinguish between delayed and on-time deliveries and can serve as a decision-support tool for proactive logistics planning.
+- Logistic Regression (baseline)
+- Random Forest
+- XGBoost
+- LightGBM
 
 ---
 
-# 📌 Feature Importance
+## 📊 Model Performance
 
-The Random Forest model identified the most influential factors contributing to late deliveries, enabling better operational decision-making and proactive shipment monitoring.
+**5-Fold Cross-Validation (mean, balanced training set):**
 
----
+| Model | Accuracy | Precision | Recall | F1 | ROC-AUC |
+|---|---|---|---|---|---|
+| Logistic Regression | 0.7134 | 0.7875 | 0.5845 | 0.6710 | 0.7098 |
+| **Random Forest** | **0.7674** | **0.8513** | **0.6481** | **0.7359** | **0.8630** |
+| XGBoost | 0.7587 | — | — | — | — |
 
-# 💡 Key Business Insights
+**Hold-Out Test Set (final validation):**
 
-- Identified regions with consistently high delivery delays.
-- Evaluated shipping modes contributing most to delayed deliveries.
-- Quantified the financial impact of delivery delays on profitability.
-- Identified high-performing product categories and departments.
-- Analyzed customer segments generating maximum revenue.
-- Discovered operational bottlenecks affecting order fulfillment.
-- Built a predictive model capable of identifying high-risk shipments before dispatch.
+| Model | Accuracy | Precision | Recall | F1 | ROC-AUC |
+|---|---|---|---|---|---|
+| Logistic Regression | 0.6971 | 0.8329 | 0.5895 | 0.6904 | 0.7088 |
+| **Random Forest** | **0.7356** | **0.8504** | **0.6534** | **0.7390** | **0.8222** |
+| XGBoost | 0.7257 | 0.8794 | 0.6040 | — | — |
 
----
-
-# 🚀 Business Recommendations
-
-- Prioritize orders with high predicted delivery risk.
-- Improve logistics planning for high-delay regions.
-- Optimize underperforming shipping modes.
-- Monitor delivery KPIs continuously.
-- Allocate additional operational resources during peak delay periods.
-- Use predictive analytics to proactively reduce SLA violations.
+**Random Forest was the strongest and most consistent performer** across both cross-validation and hold-out evaluation, confirming it generalizes well rather than overfitting to a single split.
 
 ---
 
-# 📁 Repository Structure
+## 📌 Feature Importance
 
-Supply-Chain-Analytics/
+Top predictors of late delivery risk (Random Forest):
 
+| Feature | Importance |
+|---|---|
+| Days for shipment (scheduled) | 0.2547 |
+| Shipping Mode (frequency-encoded) | 0.2420 |
+| Order hour | 0.1674 |
+| Order Region (frequency-encoded) | 0.0862 |
+| Order month | 0.0723 |
+| Category Name (frequency-encoded) | 0.0717 |
+
+Scheduled shipping window and shipping mode dominate the model's predictions — suggesting delay risk is largely set at the point of shipping-method selection, not driven by customer or product category.
+
+---
+
+## 💡 Key Business Insights
+
+- Quantified **$2.1M in profit lost to late deliveries**, out of $7.5M total profit — delays are a material drag on margin, not a minor operational issue.
+- Only 45.3% of orders arrive on time; the majority (54.7%) are late.
+- Delay risk varies meaningfully by region, shipping mode, and time of day/month — enabling targeted intervention rather than blanket policy changes.
+- A validated Random Forest model (ROC-AUC 0.82–0.86) can flag high-risk orders *before* shipment, enabling proactive logistics decisions rather than after-the-fact damage control.
+
+---
+
+## 🚀 Business Recommendations
+
+- Prioritize proactive intervention (expedited handling, customer communication) for orders the model flags as high-risk.
+- Investigate and renegotiate SLAs with underperforming shipping modes, which are the second-largest driver of delay risk.
+- Target operational fixes at the specific regions and time windows (month/hour) with the highest delay concentration, rather than uniform process changes.
+- Track the $2.1M delay-related profit loss as a standing KPI to measure the ROI of any operational changes.
+- Integrate the predictive model into order processing to enable real-time risk flagging.
+
+---
+
+## 📁 Repository Structure
+
+```
+Supply-Chain-Management/
 │── main.ipynb
+│── DataCoSupplyChainDataset.csv
 │── README.md
+```
 
 ---
 
-# 🎯 Future Improvements
+## 🎯 Future Improvements
 
-- Hyperparameter tuning using GridSearchCV / RandomizedSearchCV
-- XGBoost and LightGBM model comparison
-- Interactive Power BI dashboard
-- Real-time prediction pipeline using Streamlit or Flask
+- Hyperparameter tuning via GridSearchCV / RandomizedSearchCV
+- Replace frequency encoding with (leakage-safe, CV-aware) target encoding to test for improved signal
+- Interactive Power BI / Tableau dashboard for the KPI and root-cause findings
+- Real-time prediction pipeline via Streamlit or Flask
+- Confirm SMOTE is applied within the cross-validation pipeline (not just once beforehand) to fully eliminate any resampling leakage risk
