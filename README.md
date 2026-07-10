@@ -213,7 +213,6 @@ Scheduled shipping window and shipping mode dominate the model's predictions —
 ```
 Supply-Chain-Management/
 │── main.ipynb
-│── DataCoSupplyChainDataset.csv
 │── README.md
 ```
 
